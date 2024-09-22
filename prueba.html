@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Países y Capitales del Mundo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        #busqueda {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        #no-resultados {
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Países y Capitales del Mundo</h1>
+    <input type="text" id="busqueda" placeholder="Buscar por país, capital o continente" aria-label="Buscar países y capitales">
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Continente</th>
+                    <th>País</th>
+                    <th>Capital</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-paises">
+                <!-- Los datos de la tabla se llenarán con JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <p id="no-resultados">No se encontraron resultados para tu búsqueda.</p>
+
+    <script>
+        const paises = [
+            { continente: "África", pais: "Nigeria", capital: "Abuja" },
+            { continente: "África", pais: "Egipto", capital: "El Cairo" },
+            { continente: "África", pais: "Sudáfrica", capital: "Pretoria" },
+            { continente: "América", pais: "Estados Unidos", capital: "Washington D.C." },
+            { continente: "América", pais: "Brasil", capital: "Brasilia" },
+            { continente: "América", pais: "Canadá", capital: "Ottawa" },
+            { continente: "América", pais: "México", capital: "Ciudad de México" },
+            { continente: "América", pais: "Argentina", capital: "Buenos Aires" },
+            { continente: "Asia", pais: "China", capital: "Pekín" },
+            { continente: "Asia", pais: "India", capital: "Nueva Delhi" },
+            { continente: "Asia", pais: "Japón", capital: "Tokio" },
+            { continente: "Asia", pais: "Corea del Sur", capital: "Seúl" },
+            { continente: "Europa", pais: "Alemania", capital: "Berlín" },
+            { continente: "Europa", pais: "Francia", capital: "París" },
+            { continente: "Europa", pais: "Reino Unido", capital: "Londres" },
+            { continente: "Europa", pais: "Italia", capital: "Roma" },
+            { continente: "Europa", pais: "España", capital: "Madrid" },
+            { continente: "Oceanía", pais: "Australia", capital: "Canberra" },
+            { continente: "Oceanía", pais: "Nueva Zelanda", capital: "Wellington" },
+        ];
+
+        const tablaPaises = document.getElementById('tabla-paises');
+        const inputBusqueda = document.getElementById('busqueda');
+        const noResultados = document.getElementById('no-resultados');
+
+        function renderizarTabla(paisesFiltrados) {
+            tablaPaises.innerHTML = '';
+            if (paisesFiltrados.length === 0) {
+                noResultados.style.display = 'block';
+            } else {
+                noResultados.style.display = 'none';
+                paisesFiltrados.forEach(pais => {
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td>${pais.continente}</td>
+                        <td>${pais.pais}</td>
+                        <td>${pais.capital}</td>
+                    `;
+                    tablaPaises.appendChild(fila);
+                });
+            }
+        }
+
+        function filtrarPaises(termino) {
+            return paises.filter(pais => 
+                pais.pais.toLowerCase().includes(termino.toLowerCase()) ||
+                pais.capital.toLowerCase().includes(termino.toLowerCase()) ||
+                pais.continente.toLowerCase().includes(termino.toLowerCase())
+            );
+        }
+
+        inputBusqueda.addEventListener('input', (e) => {
+            const paisesFiltrados = filtrarPaises(e.target.value);
+            renderizarTabla(paisesFiltrados);
+        });
+
+        // Inicializar la tabla con todos los países
+        renderizarTabla(paises);
+    </script>
+</body>
+</html>
